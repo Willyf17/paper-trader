@@ -1,0 +1,34 @@
+name: Paper trader
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: paper-trader
+  cancel-in-progress: false
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Simulate one step
+        env:
+          AGENT_MODE: ${{ vars.AGENT_MODE || 'technical' }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-6-luna' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python scheduled.py
+      - name: Save portfolio
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add state/paper.sqlite3 state/report.json state/REPORT.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update paper portfolio [skip ci]'
+            git push
+          fi
