@@ -1,0 +1,27 @@
+# Simulation BTC/EUR
+
+```json
+{
+  "equity_eur": 49.9063,
+  "return_pct": -0.187,
+  "eur": 29.92,
+  "btc": 0.0002663625727700135,
+  "trades": 1,
+  "fees_eur": 0.08,
+  "btc_buy_hold_eur": 49.5925,
+  "btc_buy_hold_return_pct": -0.815,
+  "halted": false,
+  "model_tokens": {
+    "input": 0,
+    "output": 0
+  },
+  "last_mark_utc": "2026-10-01T16:48:57+00:00",
+  "last_decision_candle": 1790872200,
+  "agent_mode": "technical",
+  "equity_after_estimated_exit_eur": 49.8164,
+  "max_observed_drawdown_pct": 0.187,
+  "data_gap_events": 0
+}
+```
+
+Capital virtuel. Frais API exclus. Stops estimés à partir des OHLC 1m.
