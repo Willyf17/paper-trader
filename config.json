@@ -1,0 +1,22 @@
+{
+  "initial_cash": 50.0,
+  "symbols": ["XBTEUR", "ETHEUR", "SOLEUR", "XRPEUR", "ADAEUR"],
+  "fee": 0.004,
+  "slippage": 0.001,
+  "max_spread": 0.002,
+  "risk_fraction": 0.02,
+  "max_total_risk_fraction": 0.035,
+  "max_exposure_fraction": 0.80,
+  "max_position_fraction": 0.50,
+  "max_positions": 2,
+  "min_notional": 5.0,
+  "max_drawdown": 0.20,
+  "daily_loss_limit": 0.08,
+  "cooldown_seconds": 3600,
+  "max_hold_seconds": 172800,
+  "min_net_rr": 2.0,
+  "correlation_threshold": 0.85,
+  "min_quote_volume_eur": 1000000,
+  "min_score": 60,
+  "enable_range_strategy": false
+}

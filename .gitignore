@@ -1,3 +1,6 @@
+.DS_Store
 __pycache__/
 .env
-state/working.sqlite3
+*.zip
+data/
+research/
