@@ -1,34 +1,32 @@
-name: Paper trader
+name: Paper Lab
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    - cron: '9,24,39,54 * * * *'
 permissions:
   contents: write
 concurrency:
-  group: paper-trader
+  group: paper-lab
   cancel-in-progress: false
 jobs:
   simulate:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Simulate one step
-        env:
-          AGENT_MODE: ${{ vars.AGENT_MODE || 'technical' }}
-          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-6-luna' }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python scheduled.py
-      - name: Save portfolio
+      - name: Tests
+        run: python -m unittest discover -v
+      - name: Simulation
+        run: python run.py
+      - name: Persist portfolio
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add state/paper.sqlite3 state/report.json state/REPORT.md
+          git add state/portfolio.json state/report.json state/REPORT.md
           if ! git diff --cached --quiet; then
-            git commit -m 'Update paper portfolio [skip ci]'
+            git commit -m 'Update Paper Lab [skip ci]'
             git push
           fi

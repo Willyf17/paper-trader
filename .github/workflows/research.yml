@@ -1,0 +1,37 @@
+name: Historical evaluation
+on:
+  workflow_dispatch:
+    inputs:
+      months:
+        description: 'Mois consecutifs YYYY-MM separes par des espaces'
+        default: '2026-06 2026-07 2026-08'
+        required: true
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -v
+      - name: Download archives
+        env:
+          MONTHS: ${{ inputs.months }}
+        run: |
+          python - <<'PY'
+          import os, subprocess
+          subprocess.run(['python','history.py','--months',*os.environ['MONTHS'].split()],check=True)
+          PY
+      - run: python backtest.py --folds 3
+      - run: python backtest.py --folds 3 --stress-costs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-evaluation
+          path: |
+            research/
+            data/provenance.json
+          retention-days: 7
